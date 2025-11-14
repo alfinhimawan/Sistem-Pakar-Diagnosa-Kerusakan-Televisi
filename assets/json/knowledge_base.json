@@ -1,0 +1,220 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "description": "Knowledge Base untuk Sistem Pakar Diagnosa Kerusakan Televisi",
+    "lastUpdated": "2025-11-14",
+    "language": "id"
+  },
+  "indicators": [
+    {
+      "indicator_code": "IND01",
+      "indicator_name": "Rangkaian Catu Daya"
+    },
+    {
+      "indicator_code": "IND02",
+      "indicator_name": "Rangkaian Penerima Gelombang"
+    },
+    {
+      "indicator_code": "IND03",
+      "indicator_name": "Rangkaian Gambar"
+    },
+    {
+      "indicator_code": "IND04",
+      "indicator_name": "Rangkaian Suara"
+    }
+  ],
+  "symptoms": [
+    {
+      "symptom_code": "GJL01",
+      "symptom_name": "Televisi mati namun lampu indikator menyala"
+    },
+    {
+      "symptom_code": "GJL02",
+      "symptom_name": "Kabel power ketika dialiri listrik memercikan api"
+    },
+    {
+      "symptom_code": "GJL03",
+      "symptom_name": "Miniatur Circuit Breaker (MCB) trip atau turun"
+    },
+    {
+      "symptom_code": "GJL04",
+      "symptom_name": "Terdengar bunyi meletup dari dalam televisi"
+    },
+    {
+      "symptom_code": "GJL05",
+      "symptom_name": "Terdengar bunyi berdesis pada televisi"
+    },
+    {
+      "symptom_code": "GJL06",
+      "symptom_name": "Gambar televisi tidak jernih"
+    },
+    {
+      "symptom_code": "GJL07",
+      "symptom_name": "Gambar televisi noise atau bintik-bintik"
+    },
+    {
+      "symptom_code": "GJL08",
+      "symptom_name": "Gambar televisi tidak ada namun suara ada"
+    },
+    {
+      "symptom_code": "GJL09",
+      "symptom_name": "Layar gambar televisi gelap atau kurang terang"
+    },
+    {
+      "symptom_code": "GJL10",
+      "symptom_name": "Pencahayaan televisi kurang"
+    },
+    {
+      "symptom_code": "GJL11",
+      "symptom_name": "Tombol setting pada televisi tidak berfungsi"
+    },
+    {
+      "symptom_code": "GJL12",
+      "symptom_name": "Siaran televisi tidak tersimpan"
+    },
+    {
+      "symptom_code": "GJL13",
+      "symptom_name": "Video input tidak berfungsi"
+    },
+    {
+      "symptom_code": "GJL14",
+      "symptom_name": "Suara ada namun gambar televisi bergaris"
+    },
+    {
+      "symptom_code": "GJL15",
+      "symptom_name": "Gambar televisi bergerak-gerak dan bergemetar"
+    },
+    {
+      "symptom_code": "GJL16",
+      "symptom_name": "Gambar televisi menyempit keatas atau ke bawah"
+    },
+    {
+      "symptom_code": "GJL17",
+      "symptom_name": "Gambar televisi berbentuk oval atau trapesium"
+    },
+    {
+      "symptom_code": "GJL18",
+      "symptom_name": "Gambar televisi ada namun suara tidak ada"
+    },
+    {
+      "symptom_code": "GJL19",
+      "symptom_name": "Suara televisi lemah dan cacat"
+    }
+  ],
+  "damages": [
+    {
+      "damage_code": "PYB01",
+      "damage_name": "Kerusakan Catu Daya 1",
+      "indicator_code": "IND01",
+      "solution": "Periksa fuse dan power supply"
+    },
+    {
+      "damage_code": "PYB02",
+      "damage_name": "Kerusakan Catu Daya 2",
+      "indicator_code": "IND01",
+      "solution": "Ganti komponen power supply"
+    },
+    {
+      "damage_code": "PYB03",
+      "damage_name": "Kerusakan Penerima Gelombang",
+      "indicator_code": "IND02",
+      "solution": "Periksa tuner dan antena"
+    },
+    {
+      "damage_code": "PYB04",
+      "damage_name": "Kerusakan Penerima Gelombang 2",
+      "indicator_code": "IND02",
+      "solution": "Periksa IC penerima"
+    },
+    {
+      "damage_code": "PYB05",
+      "damage_name": "Kerusakan Gambar 1",
+      "indicator_code": "IND03",
+      "solution": "Periksa tombol setting dan input video"
+    },
+    {
+      "damage_code": "PYB06",
+      "damage_name": "Kerusakan Gambar 2",
+      "indicator_code": "IND03",
+      "solution": "Periksa IC gambar"
+    },
+    {
+      "damage_code": "PYB07",
+      "damage_name": "Kerusakan Gambar 3",
+      "indicator_code": "IND03",
+      "solution": "Periksa layar dan IC gambar"
+    },
+    {
+      "damage_code": "PYB08",
+      "damage_name": "Kerusakan Suara",
+      "indicator_code": "IND04",
+      "solution": "Periksa speaker dan amplifier"
+    }
+  ],
+  "rules": [
+    {
+      "rule_id": 1,
+      "if_statement": "IF (GJL01 AND GJL02 AND GJL03) THEN PYB01",
+      "damage_code": "PYB01",
+      "damage_name": "Kerusakan Catu Daya 1",
+      "symptoms": ["GJL01", "GJL02", "GJL03"],
+      "operator": "AND"
+    },
+    {
+      "rule_id": 2,
+      "if_statement": "IF (GJL01 AND GJL02 AND GJL04) THEN PYB02",
+      "damage_code": "PYB02",
+      "damage_name": "Kerusakan Catu Daya 2",
+      "symptoms": ["GJL01", "GJL02", "GJL04"],
+      "operator": "AND"
+    },
+    {
+      "rule_id": 3,
+      "if_statement": "IF (GJL05 AND GJL06 AND GJL07) THEN PYB03",
+      "damage_code": "PYB03",
+      "damage_name": "Kerusakan Penerima Gelombang",
+      "symptoms": ["GJL05", "GJL06", "GJL07"],
+      "operator": "AND"
+    },
+    {
+      "rule_id": 4,
+      "if_statement": "IF (GJL08 AND GJL09 AND GJL10) THEN PYB04",
+      "damage_code": "PYB04",
+      "damage_name": "Kerusakan Penerima Gelombang 2",
+      "symptoms": ["GJL08", "GJL09", "GJL10"],
+      "operator": "AND"
+    },
+    {
+      "rule_id": 5,
+      "if_statement": "IF (GJL11 AND GJL12 AND GJL13) THEN PYB05",
+      "damage_code": "PYB05",
+      "damage_name": "Kerusakan Gambar 1",
+      "symptoms": ["GJL11", "GJL12", "GJL13"],
+      "operator": "AND"
+    },
+    {
+      "rule_id": 6,
+      "if_statement": "IF (GJL14 AND GJL15 AND GJL16) THEN PYB06",
+      "damage_code": "PYB06",
+      "damage_name": "Kerusakan Gambar 2",
+      "symptoms": ["GJL14", "GJL15", "GJL16"],
+      "operator": "AND"
+    },
+    {
+      "rule_id": 7,
+      "if_statement": "IF (GJL14 AND GJL15 AND GJL17) THEN PYB07",
+      "damage_code": "PYB07",
+      "damage_name": "Kerusakan Gambar 3",
+      "symptoms": ["GJL14", "GJL15", "GJL17"],
+      "operator": "AND"
+    },
+    {
+      "rule_id": 8,
+      "if_statement": "IF (GJL18 AND GJL19) THEN PYB08",
+      "damage_code": "PYB08",
+      "damage_name": "Kerusakan Suara",
+      "symptoms": ["GJL18", "GJL19"],
+      "operator": "AND"
+    }
+  ]
+}
