@@ -1,24 +1,15 @@
-// ========================================
-// KNOWLEDGE BASE & DATA MANAGEMENT
-// ========================================
-
 let knowledgeBase = null;
 let selectedSymptoms = new Set();
-
-// ========================================
-// INITIALIZE APPLICATION
-// ========================================
+let showValidationError = false;
 
 document.addEventListener('DOMContentLoaded', async () => {
-    console.log('🚀 TV Expert dimulai...');
+    console.log('🚀 FixScreen dimulai...');
     await loadKnowledgeBase();
     setupEventListeners();
+    setupNavbarActiveState();
+    setupScrollToTopButton();
     updateProcessButton();
 });
-
-// ========================================
-// LOAD KNOWLEDGE BASE FROM JSON
-// ========================================
 
 async function loadKnowledgeBase() {
     try {
@@ -43,10 +34,6 @@ async function loadKnowledgeBase() {
         showErrorMessage('Gagal memuat data sistem. Silahkan refresh halaman.');
     }
 }
-
-// ========================================
-// DISPLAY SYMPTOMS FROM JSON
-// ========================================
 
 function displaySymptoms() {
     const container = document.getElementById('symptomsContainer');
@@ -73,10 +60,6 @@ function displaySymptoms() {
     
     console.log(`✅ ${knowledgeBase.symptoms.length} gejala ditampilkan`);
 }
-
-// ========================================
-// CREATE SYMPTOM CARD ELEMENT
-// ========================================
 
 function createSymptomCard(symptom) {
     const card = document.createElement('div');
@@ -109,11 +92,6 @@ function createSymptomCard(symptom) {
     
     return card;
 }
-
-// ========================================
-// HANDLE SYMPTOM SELECTION
-// ========================================
-
 function handleSymptomChange(event, card) {
     const checkbox = event.target;
     const symptomCode = checkbox.dataset.symptomCode;
@@ -133,20 +111,12 @@ function handleSymptomChange(event, card) {
     updateSymptomCounter();
 }
 
-// ========================================
-// UPDATE SYMPTOM COUNTER
-// ========================================
-
 function updateSymptomCounter() {
     const counter = document.getElementById('symptomCount');
     if (counter) {
         counter.textContent = selectedSymptoms.size;
     }
 }
-
-// ========================================
-// UPDATE PROCESS BUTTON STATE
-// ========================================
 
 function updateProcessButton() {
     const processBtn = document.getElementById('processBtn');
@@ -159,26 +129,19 @@ function updateProcessButton() {
     }
 }
 
-// ========================================
-// UPDATE INFO BOX
-// ========================================
-
 function updateInfoBox() {
     const infoBox = document.getElementById('infoBox');
     
-    if (selectedSymptoms.size === 0) {
+    if (selectedSymptoms.size === 0 && showValidationError) {
         infoBox.style.display = 'flex';
     } else {
         infoBox.style.display = 'none';
     }
 }
 
-// ========================================
-// RESET SYMPTOMS
-// ========================================
-
 function resetSymptoms() {
     selectedSymptoms.clear();
+    showValidationError = false;
     
     document.querySelectorAll('.symptom-checkbox').forEach(checkbox => {
         checkbox.checked = false;
@@ -195,38 +158,28 @@ function resetSymptoms() {
     console.log('🔄 Semua gejala direset');
 }
 
-// ========================================
-// PROCESS SYMPTOMS (PLACEHOLDER)
-// ========================================
-
 function processSymptoms() {
     if (selectedSymptoms.size === 0) {
+        showValidationError = true;
+        updateInfoBox();
         console.warn('⚠️ Tidak ada gejala yang dipilih');
         return;
     }
     
+    showValidationError = false;
     console.log('🔍 Memproses gejala yang dipilih:');
     console.log([...selectedSymptoms]);
     
-    const symptomList = Array.from(selectedSymptoms).join(', ');
-    
-    alert(`✅ Diagnosa Dimulai!\n\nGejala yang dipilih: ${selectedSymptoms.size}\n\n${symptomList}\n\nForward chaining akan diimplementasikan pada tahap 2.`);
+    showResultModal();
     
     // TODO: Forward Chaining akan ditambahkan pada tahap 2
 }
 
-// ========================================
-// SMOOTH SCROLL TO SYMPTOMS
-// ========================================
 
 function scrollToSymptoms() {
     const symptomsSection = document.getElementById('symptoms');
     symptomsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
-
-// ========================================
-// ERROR HANDLING
-// ========================================
 
 function showErrorMessage(message) {
     const container = document.getElementById('symptomsContainer');
@@ -240,10 +193,6 @@ function showErrorMessage(message) {
     `;
     container.style.display = 'grid';
 }
-
-// ========================================
-// SETUP EVENT LISTENERS
-// ========================================
 
 function setupEventListeners() {
     const hamburger = document.getElementById('hamburger');
@@ -263,7 +212,6 @@ function setupEventListeners() {
         });
     }
     
-    // Scroll navbar effect
     let lastScrollTop = 0;
     const navbar = document.getElementById('navbar');
     
@@ -271,9 +219,9 @@ function setupEventListeners() {
         let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
         
         if (scrollTop > 100) {
-            navbar.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)';
+            navbar.style.boxShadow = '0 8px 16px rgba(0, 0, 0, 0.12)';
         } else {
-            navbar.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.08)';
+            navbar.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.06)';
         }
         
         lastScrollTop = scrollTop;
@@ -282,10 +230,162 @@ function setupEventListeners() {
     console.log('✅ Event listeners siap');
 }
 
-// ========================================
-// DEBUG CONSOLE
-// ========================================
+function setupNavbarActiveState() {
+    const navbarLinks = document.querySelectorAll('.navbar-link');
+    
+    updateActiveNavbarLink();
+    
+    window.addEventListener('scroll', updateActiveNavbarLink);
+    
+    navbarLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            setTimeout(updateActiveNavbarLink, 100);
+        });
+    });
+}
 
-console.log('%c🎯 TV Expert - Sistem Pakar Diagnosa Kerusakan TV v1.0', 
+function updateActiveNavbarLink() {
+    const navbarLinks = document.querySelectorAll('.navbar-link');
+    const sections = document.querySelectorAll('section[id]');
+    
+    let currentSection = '';
+    
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+        
+        if (window.scrollY >= sectionTop - 150) {
+            currentSection = section.getAttribute('id');
+        }
+    });
+    
+    navbarLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${currentSection}`) {
+            link.classList.add('active');
+        }
+    });
+}
+
+function setupScrollToTopButton() {
+    const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+    
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 300) {
+            scrollToTopBtn.classList.add('show');
+        } else {
+            scrollToTopBtn.classList.remove('show');
+        }
+    });
+    
+    scrollToTopBtn.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+}
+
+function showResultModal() {
+    const modal = document.getElementById('resultModal');
+    const modalBody = document.getElementById('modalBody');
+    const modalCloseBtn = document.getElementById('modalCloseBtn');
+    const modalCloseBtn2 = document.getElementById('modalCloseBtn2');
+    
+    const symptomNames = Array.from(selectedSymptoms).map(code => {
+        const symptom = knowledgeBase.symptoms.find(s => s.symptom_code === code);
+        return symptom ? symptom.symptom_name : code;
+    });
+    
+    const modalContent = `
+        <div class="modal-content-header">
+            <div class="modal-success-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+            </div>
+            <h4 class="modal-content-title">Diagnosa Dimulai!</h4>
+            <p class="modal-content-subtitle">Gejala Anda telah dicatat dan siap dianalisis</p>
+        </div>
+        
+        <div class="modal-stats">
+            <div class="modal-stat-card">
+                <div class="modal-stat-label">Total Gejala</div>
+                <div class="modal-stat-value">${selectedSymptoms.size}</div>
+            </div>
+            <div class="modal-stat-card">
+                <div class="modal-stat-label">Status</div>
+                <div class="modal-stat-value">✓</div>
+            </div>
+        </div>
+        
+        <div class="modal-symptoms-list">
+            <div class="modal-symptoms-label">Gejala yang Dipilih</div>
+            <div class="modal-symptoms-tags">
+                ${symptomNames.map(name => `
+                    <span class="modal-symptom-tag">${name}</span>
+                `).join('')}
+            </div>
+        </div>
+    `;
+    
+    modalBody.innerHTML = modalContent;
+    modal.classList.add('show');
+    
+    modalCloseBtn.addEventListener('click', closeModal);
+    modalCloseBtn2.addEventListener('click', closeModal);
+    
+    const modalNextBtn = document.getElementById('modalNextBtn');
+    modalNextBtn.addEventListener('click', showProcessingModal);
+    
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
+}
+
+function closeModal() {
+    const modal = document.getElementById('resultModal');
+    modal.classList.remove('show');
+}
+
+function showProcessingModal() {
+    const resultModal = document.getElementById('resultModal');
+    const processingModal = document.getElementById('processingModal');
+    
+    resultModal.classList.remove('show');
+    
+    processingModal.classList.add('show');
+    
+    setTimeout(() => {
+        processingModal.classList.remove('show');
+        showComingSoonModal();
+    }, 3000);
+}
+
+function showComingSoonModal() {
+    const comingSoonModal = document.getElementById('comingSoonModal');
+    const comingSoonCloseBtn = document.getElementById('comingSoonCloseBtn');
+    const comingSoonOkBtn = document.getElementById('comingSoonOkBtn');
+    
+    comingSoonModal.classList.add('show');
+    
+    comingSoonCloseBtn.addEventListener('click', () => {
+        comingSoonModal.classList.remove('show');
+    });
+    
+    comingSoonOkBtn.addEventListener('click', () => {
+        comingSoonModal.classList.remove('show');
+    });
+    
+    comingSoonModal.addEventListener('click', (e) => {
+        if (e.target === comingSoonModal) {
+            comingSoonModal.classList.remove('show');
+        }
+    });
+}
+
+console.log('%c🎯 FixScreen - Sistem Pakar Diagnosa Kerusakan TV v1.0', 
     'color: white; background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%); padding: 8px 16px; border-radius: 4px; font-weight: bold; font-size: 14px;');
 console.log('%cFrontend Stage - UI & Data Loading Ready', 'color: #3b82f6; font-weight: bold;');
