@@ -3,7 +3,7 @@ let selectedSymptoms = new Set();
 let showValidationError = false;
 
 document.addEventListener('DOMContentLoaded', async () => {
-    console.log('🚀 FixScreen dimulai...');
+    console.log('[START] FixScreen dimulai...');
     await loadKnowledgeBase();
     setupEventListeners();
     setupNavbarActiveState();
@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 async function loadKnowledgeBase() {
     try {
-        console.log('📂 Memuat knowledge base...');
+        console.log('[LOAD] Memuat knowledge base...');
         const response = await fetch('assets/json/knowledge_base.json');
         
         if (!response.ok) {
@@ -21,7 +21,7 @@ async function loadKnowledgeBase() {
         }
         
         knowledgeBase = await response.json();
-        console.log('✅ Knowledge base berhasil dimuat');
+        console.log('[SUCCESS] Knowledge base berhasil dimuat');
         console.log(`   - ${knowledgeBase.indicators.length} indikator`);
         console.log(`   - ${knowledgeBase.symptoms.length} gejala`);
         console.log(`   - ${knowledgeBase.damages.length} kerusakan`);
@@ -30,7 +30,7 @@ async function loadKnowledgeBase() {
         displaySymptoms();
         
     } catch (error) {
-        console.error('❌ Gagal memuat knowledge base:', error);
+        console.error('[ERROR] Gagal memuat knowledge base:', error);
         showErrorMessage('Gagal memuat data sistem. Silahkan refresh halaman.');
     }
 }
@@ -58,7 +58,7 @@ function displaySymptoms() {
     loadingSpinner.style.display = 'none';
     container.style.display = 'grid';
     
-    console.log(`✅ ${knowledgeBase.symptoms.length} gejala ditampilkan`);
+    console.log(`[SUCCESS] ${knowledgeBase.symptoms.length} gejala ditampilkan`);
 }
 
 function createSymptomCard(symptom) {
@@ -99,11 +99,11 @@ function handleSymptomChange(event, card) {
     if (checkbox.checked) {
         selectedSymptoms.add(symptomCode);
         card.classList.add('checked');
-        console.log(`✅ Gejala dipilih: ${symptomCode}`);
+        console.log(`[SELECTED] Gejala dipilih: ${symptomCode}`);
     } else {
         selectedSymptoms.delete(symptomCode);
         card.classList.remove('checked');
-        console.log(`❌ Gejala dihapus: ${symptomCode}`);
+        console.log(`[REMOVED] Gejala dihapus: ${symptomCode}`);
     }
     
     updateProcessButton();
@@ -123,7 +123,7 @@ function updateProcessButton() {
     
     if (selectedSymptoms.size > 0) {
         processBtn.disabled = false;
-        console.log(`📊 Total gejala: ${selectedSymptoms.size}`);
+        console.log(`[INFO] Total gejala: ${selectedSymptoms.size}`);
     } else {
         processBtn.disabled = true;
     }
@@ -155,19 +155,19 @@ function resetSymptoms() {
     updateInfoBox();
     updateSymptomCounter();
     
-    console.log('🔄 Semua gejala direset');
+    console.log('[RESET] Semua gejala direset');
 }
 
 function processSymptoms() {
     if (selectedSymptoms.size === 0) {
         showValidationError = true;
         updateInfoBox();
-        console.warn('⚠️ Tidak ada gejala yang dipilih');
+        console.warn('[WARNING] Tidak ada gejala yang dipilih');
         return;
     }
     
     showValidationError = false;
-    console.log('🔍 Memproses gejala yang dipilih:');
+    console.log('[PROCESSING] Memproses gejala yang dipilih:');
     console.log([...selectedSymptoms]);
     
     showResultModal();
@@ -227,7 +227,7 @@ function setupEventListeners() {
         lastScrollTop = scrollTop;
     }, false);
     
-    console.log('✅ Event listeners siap');
+    console.log('[SUCCESS] Event listeners siap');
 }
 
 function setupNavbarActiveState() {
