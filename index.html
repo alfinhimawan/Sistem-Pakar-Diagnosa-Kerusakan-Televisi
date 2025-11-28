@@ -325,52 +325,23 @@
         </div>
     </div>
 
-    <div id="comingSoonModal" class="modal-overlay">
-        <div class="modal-container">
+    <div id="diagnosisResultModal" class="modal-overlay">
+        <div class="modal-container modal-result">
             <div class="modal-header">
-                <h3 class="modal-title">Fitur Coming Soon</h3>
-                <button class="modal-close" id="comingSoonCloseBtn" aria-label="Close modal">
+                <h3 class="modal-title">Hasil Diagnosis</h3>
+                <button class="modal-close" id="diagnosisResultCloseBtn" aria-label="Close modal">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <line x1="18" y1="6" x2="6" y2="18"></line>
                         <line x1="6" y1="6" x2="18" y2="18"></line>
                     </svg>
                 </button>
             </div>
-            <div class="modal-body">
-                <div style="text-align: center;">
-                    <div
-                        style="width: 80px; height: 80px; background: linear-gradient(135deg, #3b82f6 0%, #14b8a6 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; box-shadow: 0 8px 20px rgba(59, 130, 246, 0.2);">
-                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                            <circle cx="9" cy="10" r="1"></circle>
-                            <circle cx="12" cy="10" r="1"></circle>
-                            <circle cx="15" cy="10" r="1"></circle>
-                        </svg>
-                    </div>
-                    <h4 class="modal-content-title">Fitur Diagnosis Lebih Canggih Segera Hadir</h4>
-                    <p class="modal-content-subtitle" style="margin: 1rem 0;">Sistem sedang dikembangkan dengan analisis
-                        yang lebih mendalam untuk memberikan solusi terbaik</p>
-                    <div
-                        style="background: var(--primary-50); border-left: 4px solid var(--primary-600); padding: 1.5rem; border-radius: var(--radius-lg); text-align: left; margin: 1.5rem 0;">
-                        <p style="font-weight: 600; color: var(--neutral-900); margin-bottom: 0.75rem;">Fitur yang akan
-                            datang:</p>
-                        <ul style="list-style: none; padding: 0; margin: 0;">
-                            <li style="margin-bottom: 0.5rem; color: var(--neutral-700);">✓ Diagnosis lebih detail dan
-                                akurat</li>
-                            <li style="margin-bottom: 0.5rem; color: var(--neutral-700);">✓ Penjelasan mudah dipahami
-                            </li>
-                            <li style="margin-bottom: 0.5rem; color: var(--neutral-700);">✓ Rating kepercayaan hasil
-                            </li>
-                            <li style="color: var(--neutral-700);">✓ Panduan perbaikan lengkap</li>
-                        </ul>
-                    </div>
-                    <p style="font-size: 0.9rem; color: var(--neutral-600); margin-top: 1.5rem;">Terima kasih atas
-                        kesabaran Anda. Fitur ini sedang dalam pengembangan untuk memberikan hasil terbaik!</p>
-                </div>
+            <div class="modal-body" id="diagnosisResultBody">
+                <!-- Content will be inserted here by JavaScript -->
             </div>
             <div class="modal-footer">
-                <button class="btn btn-primary" id="comingSoonOkBtn">Siap Menunggu</button>
+                <button class="btn btn-outline" onclick="resetSymptoms(); closeDiagnosisResultModal();">Diagnosa Ulang</button>
+                <button class="btn btn-primary" id="diagnosisResultOkBtn">Selesai</button>
             </div>
         </div>
     </div>
